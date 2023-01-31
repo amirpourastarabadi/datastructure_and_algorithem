@@ -29,3 +29,4 @@ def merge(B, C):
 
 A = merg_sort(A)
 print(A)
+
