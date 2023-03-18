@@ -5,66 +5,98 @@ class Node:
         self.left = None
         self.right = None
 class Tree:
-    def in_order_print(node):
+    def __init__(self, value = None):
+        if value is None:
+            self.root = None
+        else:
+            root = Node(value)
+            self.root = root
+
+    def _in_order_print(node):
         if node.left != None:
-            Tree.in_order_print(node.left)
+            Tree._in_order_print(node.left)
         print(node.value)
         if node.right != None:
-            Tree.in_order_print(node.right)
+            Tree._in_order_print(node.right)
     
-    def pre_order_print(node):
+    def _pre_order_print(node):
         print(node.value)
         if node.left != None:
-            Tree.pre_order_print(node.left)
+            Tree._pre_order_print(node.left)
         if node.right != None:
-            Tree.pre_order_print(node.right)
+            Tree._pre_order_print(node.right)
     
-    def post_order_print(node):
+    def _post_order_print(node):
         if node.left != None:
-            Tree.post_order_print(node.left)
+            Tree._post_order_print(node.left)
         if node.right != None:
-            Tree.post_order_print(node.right)
+            Tree._post_order_print(node.right)
         print(node.value)
 
-    def search(node, value):
-        if node == None:
+    def in_order_print(self):
+        if self.root is None:
+            return "empty"
+        Tree._in_order_print(self.root)
+        
+    def pre_order_print(self):
+        if self.root is None:
+            return "empty"
+        Tree._pre_order_print(self.root)
+    
+    def post_order_print(self):
+        if self.root is None:
+            return "empty"
+        Tree._post_order_print(self.root)
+    
+    
+    def _search(value, node):
+        if node is None:
             return False
         
         if node.value == value:
             return True
         
         if value < node.value:
-            return Tree.search(node.left, value)
+            return Tree._search(value, node.left)
         
-        return Tree.search(node.right, value)
+        return Tree._search(value, node.right)
     
-    def insert(node, value):
-        if node is None:
-            return Node(value)
+    def search(self, value, node = None):
+        if self.root is None:
+            return False
+        return Tree._search(value, self.root)
+    
+    def _insert(value, node):
         if value < node.value:
             if node.left is None:
                 left_child = Node(value, node)
                 node.left = left_child
                 return
-            return Tree.insert(node.left, value)
+            return Tree._insert(value, node.left)
         if value > node.value:
             if node.right is None:
                 right_child = Node(value, node)
                 node.right = right_child
                 return
-            return Tree.insert(node.right, value)
+            return Tree._insert(value, node.right)
         
-root = Tree.insert(None, 4)
+    def insert(self, value):
+        if self.root is None:
+            self.root = Node(value)
+            return
+        return Tree._insert(value, self.root)
+        
+tree = Tree()
+tree.insert(4)
+tree.insert(8)
+tree.insert(5)
+tree.insert(4)
+tree.insert(3)
 
-Tree.insert(root, 8)
-Tree.insert(root, 5)
-Tree.insert(root, 4)
-Tree.insert(root, 3)
-
-Tree.in_order_print(root)
+tree.in_order_print()
 print("+++++++++++++++++++++++++++")
-Tree.pre_order_print(root)
+tree.pre_order_print()
 print("+++++++++++++++++++++++++++")
-Tree.post_order_print(root)
+tree.post_order_print()
 for i in range(10):
-    print(i, Tree.search(root, i))
+    print(i, tree.search(i))
