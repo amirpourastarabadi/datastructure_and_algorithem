@@ -85,7 +85,8 @@ class Tree:
             self.root = Node(value)
             return
         return Tree._insert(value, self.root)
-        
+    
+    
 tree = Tree()
 tree.insert(4)
 tree.insert(8)
