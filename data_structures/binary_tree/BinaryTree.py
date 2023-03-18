@@ -86,18 +86,67 @@ class Tree:
             return
         return Tree._insert(value, self.root)
     
+    def _findNode(node, value):
+        if node is None:
+            return None
+        
+        if node.value == value:
+            return node
+        
+        if value < node.value:
+            return Tree._findNode(node.left, value)
+        
+        return Tree._findNode( node.right, value)
+
+    def remove(self, value):
+        target_node = Tree._findNode(self.root, value)
+        if target_node is None:
+            return
+
+        if target_node.right is not None:
+            target_node.right.parent = target_node.parent
+            if target_node.value > target_node.parent.value:
+                target_node.parent.right = target_node.right
+            else:
+                target_node.parent.left = target_node.right
+            return
+        
+        if target_node.left is not None:
+            target_node.left.parent = target_node.parent
+            if target_node.value > target_node.parent.value:
+                target_node.parent.right = target_node.left
+            else:
+                target_node.parent.left = target_node.left
+            return
+        
+        if target_node.value > target_node.parent.value:
+            target_node.parent.right = None
+            return
+        
+        target_node.parent.left = None
+        
+    
     
 tree = Tree()
 tree.insert(4)
 tree.insert(8)
 tree.insert(5)
-tree.insert(4)
+tree.insert(4) # does not insert because of duplication
 tree.insert(3)
 
-tree.in_order_print()
+# tree.in_order_print()
+# print("+++++++++++++++++++++++++++")
+# tree.pre_order_print()
+# print("+++++++++++++++++++++++++++")
+# tree.post_order_print()
+# print("+++++++++++++++++++++++++++")
+for i in range(10):
+    print(i, tree.search(i))
+
+tree.remove(8)
+
+# print("+++++++++++++++++++++++++++")
+# tree.post_order_print()
 print("+++++++++++++++++++++++++++")
-tree.pre_order_print()
-print("+++++++++++++++++++++++++++")
-tree.post_order_print()
 for i in range(10):
     print(i, tree.search(i))
