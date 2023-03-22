@@ -102,28 +102,45 @@ class Tree:
         target_node = Tree._findNode(self.root, value)
         if target_node is None:
             return
+        
+        # if target_node has no children
+        if target_node.left is None and target_node.right is None:
+            if target_node.value > target_node.parent.value:
+                target_node.parent.right = None
+            else:
+                target_node.parent.left = None
+            return
 
-        if target_node.right is not None:
-            target_node.right.parent = target_node.parent
-            if target_node.value > target_node.parent.value:
-                target_node.parent.right = target_node.right
+        # if target_node has only one child
+        if (target_node.left is None and target_node.right is not None) or (target_node.left is not None and target_node.right is None):
+            if target_node.right is not None:
+                if target_node.value > target_node.parent.value:
+                    target_node.parent.right = target_node.right
+                else:
+                    target_node.parent.left = target_node.right
             else:
-                target_node.parent.left = target_node.right
+                if target_node.value > target_node.parent.value:
+                    target_node.parent.right = target_node.left
+                else:
+                    target_node.parent.left = target_node.left
             return
         
-        if target_node.left is not None:
-            target_node.left.parent = target_node.parent
-            if target_node.value > target_node.parent.value:
-                target_node.parent.right = target_node.left
-            else:
-                target_node.parent.left = target_node.left
+        # if target_node has two children
+        most_right_of_left_child = Tree._findMostRight(target_node.left)
+        if most_right_of_left_child.left is None:
+            target_node.value = most_right_of_left_child.value
+            most_right_of_left_child.parent.right = None
             return
-        
-        if target_node.value > target_node.parent.value:
-            target_node.parent.right = None
+        else:
+            target_node.value = most_right_of_left_child.value
+            most_right_of_left_child.parent.right = most_right_of_left_child.left
             return
-        
-        target_node.parent.left = None
+    
+    def _findMostRight(node):
+        if node.right is None:
+            return node
+        return Tree._findMostRight(node.right)
+
         
     
     
@@ -131,8 +148,18 @@ tree = Tree()
 tree.insert(4)
 tree.insert(8)
 tree.insert(5)
-tree.insert(4) # does not insert because of duplication
 tree.insert(3)
+tree.insert(2)
+tree.insert(3.5)
+tree.insert(9)
+tree.insert(10)
+tree.insert(9.5)
+tree.insert(6)
+tree.insert(4.9)
+
+l = list(range(11))
+l.extend([3.5, 9.5, 4.9])
+print(l)
 
 # tree.in_order_print()
 # print("+++++++++++++++++++++++++++")
@@ -140,13 +167,13 @@ tree.insert(3)
 # print("+++++++++++++++++++++++++++")
 # tree.post_order_print()
 # print("+++++++++++++++++++++++++++")
-for i in range(10):
+for i in l:
     print(i, tree.search(i))
 
 tree.remove(8)
 
-# print("+++++++++++++++++++++++++++")
-# tree.post_order_print()
+# # print("+++++++++++++++++++++++++++")
+# # tree.post_order_print()
 print("+++++++++++++++++++++++++++")
-for i in range(10):
+for i in l:
     print(i, tree.search(i))
