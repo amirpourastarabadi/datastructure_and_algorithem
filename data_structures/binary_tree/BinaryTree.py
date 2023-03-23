@@ -140,7 +140,24 @@ class Tree:
         if node.right is None:
             return node
         return Tree._findMostRight(node.right)
+    
+    def _findMostLeft(node):
+        if node.left is None:
+            return node
+        return Tree._findMostLeft(node.left)
+    
+    def max(self):
+        return Tree._findMostRight(self.root)
+    
+    def min(self):
+        return Tree._findMostLeft(self.root)
 
+    def nearestAncestor(self, node1, node2):
+        if node1 is None or node2 is None:
+            raise Exception('node1 and node2 are not in the same tree.')
+        if Tree._search(node2.value, node1.parent):
+            return node1.parent
+        return self.nearestAncestor(node1.parent, node2)
         
     
     
@@ -154,26 +171,25 @@ tree.insert(3.5)
 tree.insert(9)
 tree.insert(10)
 tree.insert(9.5)
+tree.insert(8.8)
+tree.insert(8.5)
 tree.insert(6)
 tree.insert(4.9)
 
 l = list(range(11))
-l.extend([3.5, 9.5, 4.9])
-print(l)
+l.extend([3.5, 9.5, 4.9, 8.5])
 
-# tree.in_order_print()
-# print("+++++++++++++++++++++++++++")
-# tree.pre_order_print()
-# print("+++++++++++++++++++++++++++")
-# tree.post_order_print()
-# print("+++++++++++++++++++++++++++")
 for i in l:
     print(i, tree.search(i))
 
-tree.remove(8)
 
-# # print("+++++++++++++++++++++++++++")
-# # tree.post_order_print()
 print("+++++++++++++++++++++++++++")
 for i in l:
     print(i, tree.search(i))
+print("+++++++++++++++++++++++++++")
+print('max = ', tree.max().value)
+print('min = ', tree.min().value)
+print("+++++++++++++++++++++++++++")
+n1 = Tree._findNode(tree.root, 4)
+n2 = Tree._findNode(tree.root, 4)
+print('nearest ancestor = ', tree.nearestAncestor(n1, n2).value)
