@@ -152,12 +152,14 @@ class Tree:
     def min(self):
         return Tree._findMostLeft(self.root)
 
-    def nearestAncestor(self, node1, node2):
-        if node1 is None or node2 is None:
-            raise Exception('node1 and node2 are not in the same tree.')
-        if Tree._search(node2.value, node1.parent):
-            return node1.parent
-        return self.nearestAncestor(node1.parent, node2)
+    def nearestAncestor(self, root, node1, node2):
+        delta1 = root.value - node1.value
+        delta2 = root.value - node2.value
+        if delta1 * delta2 <= 0:
+            return root
+        if node1.value > root.value:
+            return self.nearestAncestor(root.right, node1, node2)
+        return self.nearestAncestor(root.left, node1, node2)
         
     
     
@@ -190,6 +192,6 @@ print("+++++++++++++++++++++++++++")
 print('max = ', tree.max().value)
 print('min = ', tree.min().value)
 print("+++++++++++++++++++++++++++")
-n1 = Tree._findNode(tree.root, 4)
-n2 = Tree._findNode(tree.root, 4)
-print('nearest ancestor = ', tree.nearestAncestor(n1, n2).value)
+n1 = Tree._findNode(tree.root, 8.8)
+n2 = Tree._findNode(tree.root, 8.5)
+print('nearest ancestor = ', tree.nearestAncestor(tree.root, n1, n2).value)
