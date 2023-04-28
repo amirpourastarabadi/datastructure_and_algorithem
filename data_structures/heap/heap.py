@@ -1,9 +1,18 @@
 class Heap:
-    def __init__(self) -> None:
+    def __init__(self, values = []) -> None:
         self.root = None
         self.nodes = [None]
         self.size = 1
+        
+        for item in values:
+            self.insert(item)
+        
+    def minify(self):
+        pass
 
+    def maxify():
+        pass
+    
     def insert(self, value):
         self.nodes.append(value)
         value_index = self.size
@@ -63,15 +72,20 @@ class Heap:
      
 h = Heap()
 h.insert(10)
+h.insert(20)
+h.insert(15)
 h.insert(5)
+h.insert(1)
 h.insert(4)
-h.insert(6)
-h.insert(7)
-h.insert(8)
-h.insert(9)
-h.insert(11)
 print(h)
 
-for _ in range(8):
+for _ in range(6):
     print(h.get_max())
     print(h)
+
+h2 = Heap([10,20,15,5,1,4])
+print(h2)
+
+# for _ in range(8):
+#     print(h.get_max())
+#     print(h)
